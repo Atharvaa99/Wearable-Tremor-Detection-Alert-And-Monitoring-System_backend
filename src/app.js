@@ -7,7 +7,7 @@ const patientRoute = require('./routes/patient.route');
 const app = express();
 
 app.use(cors({
-    origin: '*', // during development
+    origin: 'https://wearable-tremor-detector-frontend.vercel.app/', 
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization', 'x-api-key']
 }));
