@@ -72,34 +72,30 @@ async function updatePatientInfo(req, res) {
 
 }
 
-async function deltedPatient(req, res) {
-
+async function deletePatient(req, res) {
     const patientId = req.params.patientId;
     try {
-        const patient = await patientModel.findOne({
-            _id: patientId
-        })
+        const patient = await patientModel.findOne({ _id: patientId });
+
+        if (!patient) {
+            return res.status(404).json({ message: "Patient not found" });
+        }
 
         const deviceId = patient.deviceId;
-        const device = await deviceModel.findOne({
-            deviceId
-        })
-        device.status = "INACTIVE";
-        device.patientName = "Jhon Doe";
-        await device.save();
+        const device = await deviceModel.findOne({ deviceId });
 
-        await patientModel.findOneAndDelete({
-            _id: patientId
-        })
+        if (device) {
+            device.status = "INACTIVE";
+            device.patientName = "Jhon Doe";
+            await device.save();
+        }
 
-        res.status(200).json({
-            message: "Patient Deleted successfully"
-        })
+        await patientModel.findOneAndDelete({ _id: patientId });
+
+        res.status(200).json({ message: "Patient Deleted successfully" });
     } catch (err) {
         console.log(err);
-        return res.status(400).json({
-            message: "Database error"
-        })
+        return res.status(400).json({ message: "Database error" });
     }
 }
 
@@ -119,4 +115,4 @@ try{
 }
 }
 
-module.exports = { createPatient, updatePatientInfo, deltedPatient, viewAll }
+module.exports = { createPatient, updatePatientInfo, deletePatient, viewAll }

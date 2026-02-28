@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/create-patient',authMiddleware.authUser, patientController.createPatient);
 router.patch('/patient-info/:deviceId', authMiddleware.authDevice, patientController.updatePatientInfo);
-router.delete('/delete-patient/:patientId', authMiddleware.authUser, patientController.deltedPatient);
+router.delete('/delete-patient/:patientId', authMiddleware.authUser, patientController.deletePatient);
 router.get('/viewAll', authMiddleware.authUser, patientController.viewAll);
 
 
