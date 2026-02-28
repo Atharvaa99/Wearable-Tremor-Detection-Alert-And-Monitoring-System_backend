@@ -2,36 +2,38 @@ const patientModel = require('../models/patient.model');
 const deviceModel = require('../models/device.model');
 
 async function createPatient(req, res) {
-
     const { name, deviceId } = req.body;
     try {
-        const patient = await patientModel.create({
-            name,
-            deviceId
-        })
+        const device = await deviceModel.findOne({ deviceId });
 
-        const device = await deviceModel.findOne({
-            deviceId
-        })
+        if (!device) {
+            return res.status(404).json({
+                message: "Device not found. Make sure the device is connected first."
+            });
+        }
+
+        if (device.status === 'ACTIVE') {
+            return res.status(400).json({
+                message: "Device is already assigned to a patient."
+            });
+        }
+
+        const patient = await patientModel.create({ name, deviceId });
 
         device.status = "ACTIVE";
         device.patientName = name;
-
         await device.save();
 
         res.status(201).json({
-            message: "Patient added succesfully",
+            message: "Patient added successfully",
             patient,
             device
-        })
+        });
     } catch (err) {
         console.log(err);
-        return res.status(400).json({
-            message: "Database error"
-        })
+        return res.status(400).json({ message: "Database error" });
     }
 }
-
 async function updatePatientInfo(req, res) {
 
     const deviceId = req.params.deviceId;
