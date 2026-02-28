@@ -54,7 +54,7 @@ async function loginUser(req, res) {
         })
     }
 
-    const isPasswordValid = await  user.comparePassword(password);
+    const isPasswordValid = await user.comparePassword(password);
 
     if (!isPasswordValid) {
         return res.status(401).json({
@@ -63,10 +63,10 @@ async function loginUser(req, res) {
     }
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-
     res.status(200).json({
         message: "User logged in",
-        token
+        token,
+        user: { id: user._id, name: user.name, role: user.role }
     })
 }
 
