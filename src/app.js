@@ -16,3 +16,5 @@ app.use(express.json());
 app.use('/api/auth', authRoute);
 app.use('/api/device', deviceRoute);
 app.use('/api/patient', patientRoute);
+
+module.exports = app
