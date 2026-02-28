@@ -37,5 +37,14 @@ async function deleteDevice(req,res){
         message: `Device with Id: ${deviceId} has been removed`
     })
 }
+async function viewAll(req, res) {
+    try {
+        const devices = await deviceModel.find();
+        res.status(200).json({ devices });
+    } catch (err) {
+        console.log(err);
+        return res.status(400).json({ message: "Database error" });
+    }
+}
 
-module.exports = { createDevice,deleteDevice }
+module.exports = { createDevice,deleteDevice,viewAll }

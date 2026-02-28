@@ -6,5 +6,6 @@ const router = express.Router();
 
 router.post("/connect-device/:deviceId/:type",authMiddleware.authDevice, deviceController.createDevice);
 router.delete("/delete-device/:deviceId",authMiddleware.authUser, deviceController.deleteDevice);
+router.get("/viewAll", authMiddleware.authUser, deviceController.viewAll);
 
 module.exports = router;
