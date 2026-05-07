@@ -15,6 +15,10 @@ async function checkInactiveDevice() {
         if(device && device.status === "ACTIVE"){
             device.status = "INACTIVE"
             await device.save();
+            patientModel.HR = 0;
+            patientModel.SPO2 = 0;
+            patientModel.tremorStatus = "INACTIVE";
+            await patientModel.save();
         }
     }
 }
